@@ -10,12 +10,17 @@ import { TrackingService } from '../services/tracking.service';
 export class CountriesComponent implements OnInit {
   data$: GlobalData[] = [];
   countries: string[] = [];
+  totalConfirmed$: number = 0;
+  totalDeath$: number = 0;
+  totalRecovered$: number = 0;
+  totalActive$: number = 0;
 
   constructor(private trackingService: TrackingService) { }
 
   ngOnInit(): void {
     this.trackingService.getData()
       .subscribe(res => {
+        console.log(res);
         this.data$ = res;
         this.data$.forEach(country => {
           if(country.country !== undefined) {
@@ -23,6 +28,18 @@ export class CountriesComponent implements OnInit {
           }
         });
       });
+  }
+
+  onSelectChange($event: string):void {
+    console.log($event);
+    this.data$.forEach((el:GlobalData, i:number) => {
+      if(el.country === $event) {
+        this.totalActive$ = el.active;
+        this.totalConfirmed$ = el.confirmed;
+        this.totalDeath$ = el.death;
+        this.totalRecovered$ = el.recovered;
+      }
+    })
   }
 
 }

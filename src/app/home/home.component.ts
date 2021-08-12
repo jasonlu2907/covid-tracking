@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { TrackingService } from '../services/tracking.service';
 import { GlobalData } from '../models/global-data';
+import { ChartType, Row } from "angular-google-charts";
+
+//Google-charts
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -12,6 +16,30 @@ export class HomeComponent implements OnInit {
   totalDeath$: number = 0;
   totalRecovered$: number = 0;
   totalActive$: number = 0;
+  datatable: [string, number][] = [];
+
+  chart = {
+    PieChart: ChartType.PieChart,
+    LineChart: ChartType.LineChart,
+    columnNames: ['Country', 'Cases'],
+    height: 500,
+    options: {
+      animation: {
+        duration: 1000,
+        easing: 'out',
+      },
+      is3D: true
+    }
+  };
+
+  data = [
+    ['Firefox', 45.0],
+    ['IE', 26.8],
+    ['Chrome', 12.8],
+    ['Safari', 8.5],
+    ['Opera', 6.2],
+    ['Others', 0.7] 
+  ];
 
   constructor(private trackingService: TrackingService) { }
 
@@ -29,9 +57,48 @@ export class HomeComponent implements OnInit {
             this.totalRecovered$ += country.recovered;
           }
         });
-      });
-  }
+        
+        this.initChart('c');
 
-  
+      }, 
+      (err: any) => {
+        console.log(err);
+      });
+      
+    }
+    
+  initChart(caseType: string) {
+    // this.datatable.push(['Country', 'Cases']);
+
+    this.data$.forEach((el: GlobalData) => {
+      let value: number = 0;
+
+      if(caseType == 'c') {
+        if(el.confirmed > 2000) {
+          value = el.confirmed;
+        }
+      }
+      if(caseType == 'a') {
+        if(el.active > 2000) {
+          value = el.active;
+        }
+      }
+      if(caseType == 'd') {
+        if(el.death > 2000) {
+          value = el.death;
+        }
+      }
+      if(caseType == 'r') {
+        if(el.recovered > 2000) {
+          value = el.recovered;
+        }
+      }
+
+      this.datatable.push([el.country, value]);
+
+    });
+
+    
+  }
 
 }
