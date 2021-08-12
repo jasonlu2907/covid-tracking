@@ -1,5 +1,13 @@
 <div class="container">
-  <h1>COVID-19 TRACKER</h1>
-  <p>Nullam quis risus eget <a href="#">urna mollis ornare</a> vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
-  
+  <div class="opening-section">
+    <h1>COVID-19 TRACKER</h1>
+    <p>Nullam quis risus eget <a href="#">urna mollis ornare</a> vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
+
+  </div>
+
+  <app-dashboard-card [totalActive]="totalActive$" [totalConfirmed]="totalConfirmed$" [totalDeath]="totalDeath$" [totalRecovered]="totalRecovered$"></app-dashboard-card>
+
+  <div class="content">
+    <div class="">duma may</div>
+  </div>
 </div>

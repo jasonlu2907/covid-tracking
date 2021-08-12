@@ -1,5 +1,5 @@
 export interface GlobalData {
-  country?: string,
+  country: string,
   confirmed: number,
   death: number,
   recovered: number,

@@ -1,1 +1,15 @@
-<p>countries works!</p>
+<div class="container">
+  <div class="opening-section">
+    <h1>Countries</h1>
+    <p>Choose your countries to see the current updates.</p>
+  </div>
+
+  <div class="mx-auto">
+    <div class="form-group">
+      <label for="country" class="form-label mt-4">Select Country</label>
+      <select name="" id="country" class="form-select">
+        <option *ngFor="let country of countries" value="country">{{country}}</option>
+      </select>
+    </div>
+  </div>
+</div>
