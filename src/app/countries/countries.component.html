@@ -15,4 +15,16 @@
 
   <app-dashboard-card [totalActive]="totalActive$" [totalConfirmed]="totalConfirmed$" [totalDeath]="totalDeath$" [totalRecovered]="totalRecovered$"></app-dashboard-card>
 
+  <div class="row" *ngIf="datatable[0]">
+    <div class="col-md-6">
+      <google-chart
+        [type]="chart.PieChart"
+        [data]="datatable"
+        [columns]="chart.columnNames"
+        [options]="chart.options"
+        [height]="chart.height"
+        style="width: 100%;"
+      ></google-chart>
+    </div>
+  </div>
 </div>

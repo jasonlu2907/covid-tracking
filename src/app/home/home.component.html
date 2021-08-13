@@ -16,18 +16,30 @@
   ></app-dashboard-card>
 
   <div class="content">
+    <legend class="mt-4">Filtering the result (only countries which have more than 2000 cases will be listed)</legend>
     <fieldset class="form-group">
-      <legend class="mt-4">Filtering the result</legend>
       <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-          Option one is this and that—be sure to include why it's great
+        <label class="form-check-label" for="c">
+          <input type="radio" #inputC value="c" (click)="updateChart(inputC.value)" class="form-check-input" name="optionsRadios" id="c"  checked="">
+          Confirmed cases
         </label>
       </div>
       <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2">
-          Option two can be something else and selecting it will deselect option one
+        <label class="form-check-label" for="d">
+          <input type="radio" #inputD value="d" (click)="updateChart(inputD.value)" class="form-check-input" name="optionsRadios" id="d" >
+          Dead cases
+        </label>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label" for="r">
+          <input type="radio" #inputR value="r" (click)="updateChart(inputR.value)" class="form-check-input" name="optionsRadios" id="r" >
+          Recovered cases
+        </label>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label" for="a">
+          <input type="radio" #inputA value="a" (click)="updateChart(inputA.value)" class="form-check-input" name="optionsRadios" id="a" >
+          Active cases
         </label>
       </div>
     </fieldset>

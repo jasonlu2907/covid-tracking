@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TrackingService } from '../services/tracking.service';
 import { GlobalData } from '../models/global-data';
-import { ChartType, Row } from "angular-google-charts";
+import { ChartType } from "angular-google-charts";
 
 //Google-charts
 
@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
   totalDeath$: number = 0;
   totalRecovered$: number = 0;
   totalActive$: number = 0;
-  datatable: [string, number][] = [];
+  datatable: [string, number][] = []; //[country, cases][]
 
   chart = {
     PieChart: ChartType.PieChart,
@@ -32,14 +32,15 @@ export class HomeComponent implements OnInit {
     }
   };
 
-  data = [
+  //testing data for data property in google-charts
+  /*data = [
     ['Firefox', 45.0],
     ['IE', 26.8],
     ['Chrome', 12.8],
     ['Safari', 8.5],
     ['Opera', 6.2],
     ['Others', 0.7] 
-  ];
+  ];*/
 
   constructor(private trackingService: TrackingService) { }
 
@@ -57,7 +58,7 @@ export class HomeComponent implements OnInit {
             this.totalRecovered$ += country.recovered;
           }
         });
-        
+
         this.initChart('c');
 
       }, 
@@ -69,7 +70,6 @@ export class HomeComponent implements OnInit {
     
   initChart(caseType: string) {
     // this.datatable.push(['Country', 'Cases']);
-
     this.data$.forEach((el: GlobalData) => {
       let value: number = 0;
 
@@ -93,12 +93,13 @@ export class HomeComponent implements OnInit {
           value = el.recovered;
         }
       }
-
       this.datatable.push([el.country, value]);
-
     });
-
-    
   }
 
+  updateChart(caseType: string) {
+    // console.log(caseType);
+    this.datatable = [];
+    this.initChart(caseType);
+  }
 }
