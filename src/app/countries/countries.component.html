@@ -15,7 +15,40 @@
 
   <app-dashboard-card [totalActive]="totalActive$" [totalConfirmed]="totalConfirmed$" [totalDeath]="totalDeath$" [totalRecovered]="totalRecovered$"></app-dashboard-card>
 
-  <div class="row" *ngIf="datatable[0]">
+  <div class="row">
+    <div class="col-md-6">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Country</th>
+            <th scope="col">Cases</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <thead *ngFor="let item of selectedCountry, index as i">
+          <tr>
+            <th scope="col">{{i+1}}</th>
+            <th scope="col">{{item.country}}</th>
+            <th scope="col">{{item.cases}}</th>
+            <th scope="col">{{item.date}}</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="col-md-6">
+      <google-chart
+        [type]="chart.LineChart" 
+        [data]="chart.data" 
+        [columns]="chart.columnNames" 
+        [options]="chart.options" 
+        [width]="chart.width"
+        [height]="chart.height">
+      ></google-chart>
+    </div>
+  </div>
+
+  <!-- <div class="row" *ngIf="datatable[0]">
     <div class="col-md-6">
       <google-chart
         [type]="chart.PieChart"
@@ -26,5 +59,5 @@
         style="width: 100%;"
       ></google-chart>
     </div>
-  </div>
+  </div> -->
 </div>

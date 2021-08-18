@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { CountryData } from '../models/country-data';
 import { GlobalData } from '../models/global-data';
 
 @Injectable({
@@ -9,6 +10,8 @@ import { GlobalData } from '../models/global-data';
 })
 export class TrackingService {
   private dataURL: string = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/01-09-2021.csv';
+  private dateURL: string = `https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv`;
+  
   constructor(private http: HttpClient) { }
 
   getData(): Observable<any> {
@@ -54,5 +57,37 @@ export class TrackingService {
           //since we don't care about the key
         }
       ));
+  }
+
+  getDateValue(): Observable<any> {
+    return this.http.get(this.dateURL, {responseType: 'text'})
+      .pipe(map(res => {
+        let rows = res.split('\n');
+        // console.log(rows);
+        let header = rows[0];
+        let dates = header.split(/,(?=\S)/); // string cua cac dates
+        // console.log(dates);
+        dates.splice(0, 4);
+
+        const everyCountriesData: any = {}
+        rows.splice(0, 1);
+        rows.forEach(row => {
+          let cols: string[] = row.split(/,(?=\S)/);
+          let con: string = cols[1];
+          cols.splice(0, 4); // remove unnecessary properties
+
+          everyCountriesData[con] = [];
+          cols.forEach((el, i) => {
+            let dataByDate: CountryData = {
+              country: con,
+              cases: +el,
+              date: new Date(Date.parse(dates[i]))
+            };
+            everyCountriesData[con].push(dataByDate);
+          });
+          // console.log(con, cols);
+        });
+        return everyCountriesData;
+      }));
   }
 }
