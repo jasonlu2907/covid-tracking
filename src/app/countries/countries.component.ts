@@ -18,7 +18,7 @@ export class CountriesComponent implements OnInit {
   totalDeath$: number = 0;
   totalRecovered$: number = 0;
   totalActive$: number = 0;
-
+  loading: boolean = true;
   countriesDataByDate$: any = {};
   selectedCountry: CountryData[] = [];
 
@@ -61,13 +61,14 @@ export class CountriesComponent implements OnInit {
       this.trackingService.getDateValue().pipe(
         map(res => {
           this.countriesDataByDate$ = res;
+          console.log(this.countriesDataByDate$);
         })
       )
     ).subscribe(
       {
         complete: () => {
           this.onSelectChange('Afghanistan');
-
+          this.loading = false;
         }
       }
     )

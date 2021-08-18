@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
   chart = {
     PieChart: ChartType.PieChart,
     LineChart: ChartType.LineChart,
+    data: this.datatable,
     columnNames: ['Country', 'Cases'],
     height: 500,
     options: {
@@ -95,6 +96,21 @@ export class HomeComponent implements OnInit {
       }
       this.datatable.push([el.country, value]);
     });
+    
+    this.chart = {
+      PieChart: ChartType.PieChart,
+      LineChart: ChartType.LineChart,
+      data: this.datatable,
+      columnNames: ['Country', 'Cases'],
+      height: 500,
+      options: {
+        animation: {
+          duration: 1000,
+          easing: 'out',
+        },
+        is3D: true
+      }
+    };
   }
 
   updateChart(caseType: string) {

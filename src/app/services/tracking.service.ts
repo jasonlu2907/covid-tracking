@@ -53,8 +53,8 @@ export class TrackingService {
 
           // console.log(globalDetails);
           //Vietnam: {"country": "Vietnam","confirmed": 1234,...}
-          return Object.values(globalDetails); //return as an array with the values, 
-          //since we don't care about the key
+          return Object.values(globalDetails); //return as an array with the values 
+          //from each key, since we don't care about the key
         }
       ));
   }
