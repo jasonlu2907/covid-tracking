@@ -9,10 +9,20 @@ import { GlobalData } from '../models/global-data';
   providedIn: 'root'
 })
 export class TrackingService {
-  private dataURL: string = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/01-09-2021.csv';
+  private dataURL: string = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/';
+  private extension: string = `.csv`;
+  private now: {date: string, month: string, year: string} = {date: '0', month: '0', year: '1900'};
   private dateURL: string = `https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv`;
   
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    const currentTime = new Date();
+    this.now.date = currentTime.getDate() < 10 ? `0${currentTime.getDate()}`: `${currentTime.getDate()}`;
+    this.now.month = currentTime.getMonth()+1 < 10 ? `0${currentTime.getMonth()+1}`: `${currentTime.getMonth()+1}`;
+    this.now.year = `${currentTime.getFullYear()}`;
+
+    this.dateCalculate(this.now);
+    this.dataURL = `${this.dataURL}${this.now.month}-${this.now.date}-${this.now.year}${this.extension}`;
+  }
 
   getData(): Observable<any> {
     return this.http.get(this.dataURL, {responseType: 'text'})
@@ -89,5 +99,16 @@ export class TrackingService {
         });
         return everyCountriesData;
       }));
+  }
+
+  dateCalculate(date: {date: string, month: string, year: string}) {
+    if(parseInt(date.date) === 1) {
+      if(parseInt(date.month) === 1) {
+        date.year = `${parseInt(date.year) - 1}`;
+      }
+      date.month = `${parseInt(date.month) - 1}`;
+    } else {
+      date.date = `${parseInt(date.date) - 1}`;
+    }
   }
 }

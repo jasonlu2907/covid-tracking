@@ -125,7 +125,7 @@ export class CountriesComponent implements OnInit {
   
   updateChart() {
     this.datatable = [];
-    console.log(this.selectedCountry);
+    // console.log(this.selectedCountry);
     this.selectedCountry.forEach((el: CountryData) => {
       // console.log(el.date, el.cases);
       this.datatable.push([el.date.toString(), el.cases]);
