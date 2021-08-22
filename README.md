@@ -40,6 +40,15 @@ This project was designed to track COVID-19 cases globally using these technolog
     ```
   The tricky part is when the user try to change the country/ filter the result, the data from datatable property **need** to be updated in the appropriate method. I spent most of the time struggling with it.
 
+## Deployment Instruction
+- If you haven't installed the `firebase-tools` yet, go ahead and do it using this command `npm i -g firebase-tools`
+- Login to your firebase acc: `firebase login` or it's been long time since the last time you did it, try `firebase login --reauth`
+- `firebase init`
+- 1. Choose **Hosting** as *Firebase CLI Features*
+- 2. Choose either your existed project on Firebase or create new one
+- 3. Public Directory, fill out the format **"dist/your-project-name**, if you don't know your project name, go to angular.json file for reference
+- 4. In order to fill up the dist folder with your compiled app, use `ng build --prod`, *--prod* is deprecated
+- 5. `firebase deploy` and enjoy your result
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
