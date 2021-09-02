@@ -102,13 +102,22 @@ export class TrackingService {
   }
 
   dateCalculate(date: {date: string, month: string, year: string}) {
+    // const months = new Map();
     if(parseInt(date.date) === 1) {
-      if(parseInt(date.month) === 1) {
+      if(parseInt(date.month) === 1) { // January 1, 1999 -> December 31, 1998
         date.year = `${parseInt(date.year) - 1}`;
+        date.month = `12`;
+        date.date = `31`;
+      } else {
+        date.month = `${parseInt(date.month) - 1}`; // June 1, 1999 -> May 31, 1999
+        
+        if(parseInt(date.month) === 2){ // check for leap year
+          date.date = parseInt(date.year) % 4 === 0 ? `29` : `28`;
+        }
+        date.date = `30`;        
       }
-      date.month = `${parseInt(date.month) - 1}`;
-    } else {
-      date.date = `${parseInt(date.date) - 1}`;
+    } else { // ordinary date
+      date.date = `${parseInt(date.date) - 1 < 10 ? `0${parseInt(date.date) - 1}` : `${parseInt(date.date) - 1}`}`;
     }
   }
 }
