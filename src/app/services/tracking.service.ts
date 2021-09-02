@@ -12,16 +12,23 @@ export class TrackingService {
   private dataURL: string = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/';
   private extension: string = `.csv`;
   private now: {date: string, month: string, year: string} = {date: '0', month: '0', year: '1900'};
-  private dateURL: string = `https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv`;
+  private months: Map<number, number[]> = new Map();
+
+  private dataByDateURL: string = `https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv`;
   
   constructor(private http: HttpClient) {
     const currentTime = new Date();
     this.now.date = currentTime.getDate() < 10 ? `0${currentTime.getDate()}`: `${currentTime.getDate()}`;
     this.now.month = currentTime.getMonth()+1 < 10 ? `0${currentTime.getMonth()+1}`: `${currentTime.getMonth()+1}`;
     this.now.year = `${currentTime.getFullYear()}`;
+  
+    // Set odd, even months
+    this.months.set(31, [1, 3, 5, 7, 8, 10, 12]);
+    this.months.set(30, [4, 6, 9, 11]);
 
     this.dateCalculate(this.now);
     this.dataURL = `${this.dataURL}${this.now.month}-${this.now.date}-${this.now.year}${this.extension}`;
+  
   }
 
   getData(): Observable<any> {
@@ -70,7 +77,7 @@ export class TrackingService {
   }
 
   getDateValue(): Observable<any> {
-    return this.http.get(this.dateURL, {responseType: 'text'})
+    return this.http.get(this.dataByDateURL, {responseType: 'text'})
       .pipe(map(res => {
         let rows = res.split('\n');
         // console.log(rows);
@@ -102,7 +109,6 @@ export class TrackingService {
   }
 
   dateCalculate(date: {date: string, month: string, year: string}) {
-    // const months = new Map();
     if(parseInt(date.date) === 1) {
       if(parseInt(date.month) === 1) { // January 1, 1999 -> December 31, 1998
         date.year = `${parseInt(date.year) - 1}`;
@@ -113,11 +119,18 @@ export class TrackingService {
         
         if(parseInt(date.month) === 2){ // check for leap year
           date.date = parseInt(date.year) % 4 === 0 ? `29` : `28`;
+        } else if(this.months.get(30)?.includes(parseInt(date.month))) {
+          date.date = `30`;
+        } else {
+          date.date = `31`;
         }
-        date.date = `30`;        
+        date.month = `${parseInt(date.month) < 10 ? `0${parseInt(date.month)}` : `${parseInt(date.month)}`}`;
+
       }
     } else { // ordinary date
       date.date = `${parseInt(date.date) - 1 < 10 ? `0${parseInt(date.date) - 1}` : `${parseInt(date.date) - 1}`}`;
+      date.month = `${parseInt(date.month) < 10 ? `0${parseInt(date.month)}` : `${parseInt(date.month)}`}`;
     }
+    console.log(date);
   }
 }

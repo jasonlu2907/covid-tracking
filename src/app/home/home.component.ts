@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit {
   totalRecovered$: number = 0;
   totalActive$: number = 0;
   datatable: [string, number][] = []; //[country, cases][]
+  loading: boolean = true;
 
   chart = {
     PieChart: ChartType.PieChart,
@@ -50,7 +51,7 @@ export class HomeComponent implements OnInit {
       .subscribe(result => {
         this.data$ = result;
         // console.log(this.data$[0]);
-
+        
         result.forEach((country: GlobalData)  => {
           if(!Number.isNaN(country.active)) {
             this.totalActive$ += country.active;
@@ -61,6 +62,7 @@ export class HomeComponent implements OnInit {
         });
 
         this.initChart('c');
+        this.loading = false;
 
       }, 
       (err: any) => {
